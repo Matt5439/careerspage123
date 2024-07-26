@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers Page</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f7;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #000;
+            color: #fff;
+            width: 100%;
+            text-align: center;
+            padding: 1.5em 0;
+        }
+        main {
+            margin: 40px;
+            width: 80%;
+            max-width: 1200px;
+        }
+        p {
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+        .job-listing {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            padding: 20px;
+            margin: 20px 0;
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        }
+        .job-listing:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        }
+        .job-listing h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #030303;
+        }
+        .job-listing p {
+            margin: 10px 0;
+            font-size: 1em;
+        }
+        .job-listing button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #030303;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .job-listing button:hover {
+            background-color: #030303;
+        }
+        .section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Current Openings at Golf Tracker Technology</h1>
+    </header>
+    <main>
+        <p>Welcome to Golf Tracker Technology Careers. At Golf Tracker Technology, we are passionate about revolutionizing the way golfers of all levels experience and enjoy the game. As a leading innovator in golf app development, we provide cutting-edge solutions that help golfers track their performance, improve their skills, and connect with a global community of enthusiasts.</p>
+        
+        <p>We believe that our employees are the driving force behind our success. Our team is composed of talented professionals who are dedicated to creating an exceptional user experience and pushing the boundaries of technology in the golfing world. If you are looking for a dynamic and rewarding career in a fast-paced, innovative environment, you have come to the right place.</p>
+        
+        <h2 class="section-title">Why Join Us?</h2>
+        <ul>
+            <li>Innovative Environment: Work with the latest technologies and contribute to groundbreaking projects that are shaping the future of golf.</li>
+            <li>Collaborative Culture: Join a team of passionate, creative, and diverse individuals who are committed to excellence and teamwork.</li>
+            <li>Professional Growth: We offer continuous learning opportunities, career development programs, and the chance to grow within the company.</li>
+            <li>Impactful Work: Your contributions will directly impact the lives of golfers around the world, enhancing their game and their enjoyment of the sport.</li>
+            <li>Great Benefits: Enjoy competitive salaries, comprehensive health benefits, flexible working arrangements, and more.</li>
+        </ul>
+        
+        <h2 class="section-title">Explore Opportunities</h2>
+        <p>We are always on the lookout for talented individuals to join our team. Whether you are a seasoned professional or just starting your career, we have a variety of roles to suit your skills and interests. Browse our current openings and discover how you can be part of the Golf Tracker Technology family.</p>
+        
+        <h2 class="section-title">Join Us Today!</h2>
+        <p>Are you ready to take your career to the next level? Apply now and be a part of the exciting journey at Golf Tracker Technology. Together, we can drive innovation and make a lasting impact on the world of golf.</p>
+        
+        <div id="jobContainer"></div>
+    </main>
+    <script>
+        const boardToken = 'secondeexternaldemomatt'; // Replace with your actual board token
+        const apiUrl = `https://boards-api.greenhouse.io/v1/boards/${boardToken}/jobs`;
+
+        async function fetchJobs() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                displayJobs(data.jobs);
+            } catch (error) {
+                console.error('Error fetching job data:', error);
+            }
+        }
+
+        function displayJobs(jobs) {
+            const jobContainer = document.getElementById('jobContainer');
+            jobContainer.innerHTML = '';
+
+            jobs.forEach(job => {
+                const jobElement = document.createElement('div');
+                jobElement.className = 'job-listing';
+
+                const jobTitle = document.createElement('h2');
+                jobTitle.textContent = job.title;
+
+                const jobLocation = document.createElement('p');
+                jobLocation.textContent = `Location: ${job.location.name}`;
+
+                const jobButton = document.createElement('button');
+                jobButton.textContent = 'View Job';
+                jobButton.onclick = () => window.open(job.absolute_url, '_blank');
+
+                jobElement.appendChild(jobTitle);
+                jobElement.appendChild(jobLocation);
+                jobElement.appendChild(jobButton);
+                jobContainer.appendChild(jobElement);
+            });
+        }
+
+        // Fetch jobs on page load
+        window.onload = fetchJobs;
+    </script>
+</body>
+</html>
